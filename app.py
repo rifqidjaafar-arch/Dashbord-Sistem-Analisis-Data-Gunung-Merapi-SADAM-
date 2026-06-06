@@ -6,15 +6,13 @@ import folium
 from datetime import datetime
 import streamlit.components.v1 as components
 
-# Konfigurasi halaman Streamlit agar lebih rapi dan berpusat di tengah
+# ini berfungsi agar halaman streamlit rapi ke bawah (centered)
 st.set_page_config(
     page_title="SADAM - Monitoring Merapi",
     layout="centered"
 )
 
-# ==========================================
-# FUNGSI SCRAPING DATA MAGMA
-# ==========================================
+# Mengambil data dari MAGMA (kita mengambil data realtime dari website magma.esdm.go.id)
 def ambil_data_merapi():
     url = "https://magma.esdm.go.id/v1/gunung-api/laporan"
     headers = {
@@ -58,17 +56,16 @@ def ambil_data_merapi():
             "visual": f"Terjadi kesalahan teknis: {str(e)}",
             "waktu": datetime.now().strftime("%d-%m-%Y %H:%M:%S")
         }
-
-# ==========================================
-# PROSES DATA & ASSET
-# ==========================================
+        
+# Import data yang sudah diambil dari magma.esdm.go.id
 data = ambil_data_merapi()
 
+# Set up data youtube live gunung merapi
 video_id = "8X7gHBhD1Tw"
 youtube_url = f"https://www.youtube.com/watch?v={video_id}"
 thumbnail_url = f"https://img.youtube.com/vi/{video_id}/maxresdefault.jpg"
 
-# Membuat Peta Folium
+# Membuat Peta Folium Lokasi Gunung Merapi
 m = folium.Map(location=[-7.54, 110.44], zoom_start=12, scrollWheelZoom=False)
 folium.Marker(
     [-7.54, 110.44],
@@ -79,9 +76,7 @@ folium.Marker(
 # Mengonversi peta ke HTML string
 map_html = m._repr_html_()
 
-# ==========================================
-# DASHBOARD LAYOUT ASLI (HTML + CSS)
-# ==========================================
+# Dashbord Layout (HTML + CSS)
 dashboard_html = f"""
 <div style="background-color:#f0f2f6; padding:30px; border-radius:15px; font-family:sans-serif; max-width:800px; margin:auto; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
 
